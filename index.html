@@ -20,10 +20,13 @@
 <body>
   <div class="container">
     <h1>GTA 5 Player Viewer</h1>
+
     <div class="controls">
       <span id="playerCount">Players Count: 0</span>
-      <button id="refreshBtn">Refresh</button>
-      <span id="timer">Auto-refresh in: <b>30s</b></span>
+      <div class="right-controls">
+        <button id="refreshBtn">Refresh</button>
+        <span id="timer">Auto-refresh in: <b>30s</b></span>
+      </div>
     </div>
 
     <div class="tabs">
@@ -60,6 +63,8 @@
         <tbody></tbody>
       </table>
     </div>
+
+    <div id="lastUpdated">Last Updated: --</div>
   </div>
 
   <script src="script.js"></script>

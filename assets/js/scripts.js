@@ -1,31 +1,33 @@
-const API_URL = "http://139.162.49.4:30123/players.json";
+const API_URL = "http://139.162.49.4:30123/players.json"; 
+// For local testing: const API_URL = "players.json";
+
 const playersTableBody = document.querySelector("#playersTable tbody");
 const favoritesTableBody = document.querySelector("#favoritesTable tbody");
 const playerCountEl = document.getElementById("playerCount");
 const refreshBtn = document.getElementById("refreshBtn");
-const timerEl = document.getElementById("timer b");
+const timerEl = document.querySelector("#timer b");
+const lastUpdatedEl = document.getElementById("lastUpdated");
 
 let countdown = 30;
-let refreshInterval;
-
-// Load favorites from localStorage
+let timerInterval;
 let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
+// Fetch player data
 async function fetchPlayers() {
   try {
-    const res = await fetch(API_URL);
-    const data = await res.json();
+    const response = await fetch(API_URL, { cache: "no-store" });
+    const data = await response.json();
 
-    // Sort players by ID
+    // Sort by ID ascending
     data.sort((a, b) => a.id - b.id);
 
-    // Update player count
+    // Player count
     playerCountEl.textContent = `Players Count: ${data.length}`;
 
-    // Populate All Players table
+    // Update table
     playersTableBody.innerHTML = "";
     data.forEach((player, index) => {
-      const isFavorite = favorites.some(f => f.id === player.id);
+      const isFav = favorites.some(f => f.id === player.id);
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td>${index + 1}</td>
@@ -33,8 +35,8 @@ async function fetchPlayers() {
         <td>${player.name}</td>
         <td>${player.ping}</td>
         <td>
-          <button class="favorite-btn ${isFavorite ? "remove" : ""}" data-id="${player.id}">
-            ${isFavorite ? "Remove" : "Add"}
+          <button class="favorite-btn ${isFav ? "remove" : ""}" data-id="${player.id}">
+            ${isFav ? "Remove" : "Add"}
           </button>
         </td>
       `;
@@ -42,8 +44,13 @@ async function fetchPlayers() {
     });
 
     renderFavorites();
-  } catch (err) {
-    console.error("Error fetching data:", err);
+
+    // Update last updated time
+    const now = new Date();
+    lastUpdatedEl.textContent = `Last Updated: ${now.toLocaleTimeString()}`;
+  } catch (error) {
+    console.error("Failed to fetch players:", error);
+    playersTableBody.innerHTML = `<tr><td colspan="5">Failed to load player data.</td></tr>`;
   }
 }
 
@@ -56,15 +63,17 @@ function renderFavorites() {
       <td>${player.id}</td>
       <td>${player.name}</td>
       <td>${player.ping}</td>
-      <td><button class="favorite-btn remove" data-id="${player.id}">Remove</button></td>
+      <td>
+        <button class="favorite-btn remove" data-id="${player.id}">Remove</button>
+      </td>
     `;
     favoritesTableBody.appendChild(tr);
   });
 }
 
 function toggleFavorite(id, name, ping) {
-  const existing = favorites.find(f => f.id === id);
-  if (existing) {
+  const exists = favorites.find(f => f.id === id);
+  if (exists) {
     favorites = favorites.filter(f => f.id !== id);
   } else {
     favorites.push({ id, name, ping });
@@ -73,7 +82,8 @@ function toggleFavorite(id, name, ping) {
   fetchPlayers();
 }
 
-playersTableBody.addEventListener("click", (e) => {
+// Handle favorites click (All Players)
+playersTableBody.addEventListener("click", e => {
   if (e.target.classList.contains("favorite-btn")) {
     const row = e.target.closest("tr");
     const id = Number(row.children[1].textContent);
@@ -83,7 +93,8 @@ playersTableBody.addEventListener("click", (e) => {
   }
 });
 
-favoritesTableBody.addEventListener("click", (e) => {
+// Handle favorites click (Favorites tab)
+favoritesTableBody.addEventListener("click", e => {
   if (e.target.classList.contains("favorite-btn")) {
     const id = Number(e.target.dataset.id);
     favorites = favorites.filter(f => f.id !== id);
@@ -104,11 +115,13 @@ document.querySelectorAll(".tab-button").forEach(btn => {
   });
 });
 
-// Refresh logic
-function resetTimer() {
+// Countdown logic
+function startTimer() {
+  clearInterval(timerInterval);
   countdown = 30;
-  clearInterval(refreshInterval);
-  refreshInterval = setInterval(() => {
+  timerEl.textContent = `${countdown}s`;
+
+  timerInterval = setInterval(() => {
     countdown--;
     timerEl.textContent = `${countdown}s`;
     if (countdown <= 0) {
@@ -118,11 +131,12 @@ function resetTimer() {
   }, 1000);
 }
 
+// Manual refresh button
 refreshBtn.addEventListener("click", () => {
   fetchPlayers();
-  resetTimer();
+  startTimer();
 });
 
 // Initial load
 fetchPlayers();
-resetTimer();
+startTimer();
