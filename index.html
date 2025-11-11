@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>players_gb</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/design.css">
+</head>
+
+<body><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GTA 5 Player Viewer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>GTA 5 Player Viewer</h1>
+    <div class="controls">
+      <span id="playerCount">Players Count: 0</span>
+      <button id="refreshBtn">Refresh</button>
+      <span id="timer">Auto-refresh in: <b>30s</b></span>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-button active" data-tab="all">All Players</button>
+      <button class="tab-button" data-tab="favorites">Favorites</button>
+    </div>
+
+    <div id="all" class="tab-content active">
+      <table id="playersTable">
+        <thead>
+          <tr>
+            <th>Serial</th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Ping</th>
+            <th>Favorite</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div id="favorites" class="tab-content">
+      <table id="favoritesTable">
+        <thead>
+          <tr>
+            <th>Serial</th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Ping</th>
+            <th>Remove</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/scripts.js"></script>
+</body>
+
+</html>
