@@ -14,31 +14,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GTA 5 Player Viewer</title>
+  <title>GBRP Players List</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
-    <h1>GTA 5 Player Viewer</h1>
-
-    <div class="controls">
-      <span id="playerCount">Players Count: 0</span>
-      <div class="right-controls">
-        <button id="refreshBtn">Refresh</button>
-        <span id="timer">Auto-refresh in: <b>30s</b></span>
+    <header>
+      <div class="title-area">
+        <img src="assets/img/gb_logo.png" alt="Logo" class="logo"> 
+        <h1>Greater Bengal Roleplay</h1>
       </div>
-    </div>
+      <div class="stats">
+        <span id="playerCount">Players Count: 0</span>
+        <button id="refreshBtn">Refresh</button>
+      </div>
+      <div id="timer">Next refresh in: 30s</div>
+    </header>
 
     <div class="tabs">
-      <button class="tab-button active" data-tab="all">All Players</button>
-      <button class="tab-button" data-tab="favorites">Favorites</button>
+      <button id="allTab" class="active">All Players</button>
+      <button id="favTab">Favorites</button>
     </div>
 
-    <div id="all" class="tab-content active">
+    <!-- Search Bar -->
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search by name or ID...">
+    </div>
+
+    <div id="tableContainer">
       <table id="playersTable">
         <thead>
           <tr>
-            <th>Serial</th>
+            <th>#</th>
             <th>ID</th>
             <th>Name</th>
             <th>Ping</th>
@@ -49,22 +56,11 @@
       </table>
     </div>
 
-    <div id="favorites" class="tab-content">
-      <table id="favoritesTable">
-        <thead>
-          <tr>
-            <th>Serial</th>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Ping</th>
-            <th>Remove</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-
-    <div id="lastUpdated">Last Updated: --</div>
+    <footer>
+        
+        <p id="lastUpdated">Last Updated: --</p>
+      <p>&copy; Copyright by Anonymous.</p>
+    </footer>
   </div>
 
   <script src="script.js"></script>
